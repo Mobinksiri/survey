@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('../_assets/font-awesome/css/all.min.css');
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* class names ------------------------- */
+@layer components {
+  .textXs {
+    @apply text-[12px] leading-[17px] font-light;
+  }
+  .textSmm {
+    @apply text-[14px] leading-[20px] font-normal;
+  }
+  .textSm {
+    @apply text-[16px] leading-[22.5px] font-light;
+  }
+  .textMd {
+    @apply text-[18px] leading-[25.5px] font-bold;
+  }
+  .textLg {
+    @apply text-[21px] leading-[25.5px] font-bold;
+  }
+  .textXl {
+    @apply text-[24px] leading-[33.5px] font-bold;
+  }
+  .text2xl {
+    @apply text-[32px] leading-[45.5px] font-bold;
+  }
+  .text3xl {
+    @apply text-[48px] leading-[67.5px] font-black;
+  }
+  .text4xl {
+    @apply text-[64px] leading-[90px] font-bold;
+  }
+  .navigation-padding {
+    @apply pt-[116px];
+  }
+  .custom-container {
+    @apply container px-4 lg:px-0 mx-auto;
+  }
+}
+
+.ql-editor {
+  max-height: 350px;
+  overflow: auto;
+}
+
+.ql-editor p {
+  direction: rtl;
+  text-align: right;
+}
+.ql-blank {
+  text-align: right !important;
+}
+.ql-container {
+  min-height: 150px;
+
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+  right: -20px !important;
+}
+.ql-toolbar {
+  text-align: left !important;
+}
+.ql-toolbar {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.tabbarHighlight ::after {
+  position: relative;
+  content: '';
+  width: 20px;
+  height: 20px;
+  color: red;
+}
+/* ------------------------- */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  direction: ltr;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  background: #3e434c;
+  border-radius: 10px;
+  height: 4px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #3e434c;
+  height: 16px;
+  width: 16px;
+  border-radius: 100%;
+  margin-top: -6px;
+}
+/* ---- */
+
+@keyframes colorChange {
+  0% {
+    background-color: #00df86;
+    transform: scale(1);
+  }
+  50% {
+    background-color: #53c7a4;
+    transform: scale(1.025);
+  }
+  100% {
+    background-color: #00df86;
+    transform: scale(1);
+  }
+}
+
+.custom-animation {
+  animation: colorChange 0.7s infinite; /* 2s duration, infinite loop */
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: attr(data-value) !important;
+  font-size: attr(data-value) !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+/* scroll bar style */
+/* width */
+.custom-scrollBar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* Track */
+.custom-scrollBar::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+  border-radius: 10px;
+}
+
+/* Handle */
+.custom-scrollBar::-webkit-scrollbar-thumb {
+  background: #bbbbbb;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.custom-scrollBar::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* profile sidebar */
+.profile-sidebar-scrollBar::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+/* Track */
+.profile-sidebar-scrollBar::-webkit-scrollbar-track {
+  background-color: #ebebebeb;
+  border-radius: 8px;
+}
+
+/* Handle */
+.profile-sidebar-scrollBar::-webkit-scrollbar-thumb {
+  background: #bbbbbb;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+.profile-sidebar-scrollBar::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}
