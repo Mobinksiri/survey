@@ -99,7 +99,6 @@ const PostCard = ({
          className={`relative bg-[#FBFBFB] w-full shadow-default h-[332px] rounded-2xl p-4 z-[1]`}
          whileHover={{
             scale: 0.99,
-            boxShadow: "0px 3px 8px 0px #00000014",
             transition: {
                type: "spring",
             },

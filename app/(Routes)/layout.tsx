@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                <title>ایما</title>
             </head>
             <body
-               className={`!overflow-x-hidden bg-[#F3F4F6] my-10`}
+               className={`!overflow-x-hidden bg-[#F3F4F6] mt-10`}
                dir="rtl"
                suppressHydrationWarning={true}
             >
@@ -41,7 +41,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         containerClassName=""
                         containerStyle={{}}
                         toastOptions={{
-                           // Define default options
                            className: "",
                            duration: 3000,
                            style: {

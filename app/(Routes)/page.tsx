@@ -9,7 +9,7 @@ export default function Home() {
       <div className="overflow-hidden">
          {/* <Header /> */}
          <QuizPage />
-         {/* <Footer /> */}
+         <Footer />
       </div>
    );
 }
