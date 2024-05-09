@@ -6,7 +6,6 @@ import { setApiLoading } from "../store/loading";
 import toast from "react-hot-toast";
 import { NEED_LOGIN, TOKEN } from "../_toast_messages";
 
-// Define a type for the query options
 interface ApiCallOptions {
    url: string;
    params?: any;
@@ -15,6 +14,7 @@ interface ApiCallOptions {
    callback: (response: any, error: any) => void;
    formDataIsNeeded?: boolean;
    loading?: boolean;
+   baseUrl: string;
 }
 
 interface useApiCallOptions {
@@ -26,9 +26,11 @@ interface useApiCallOptions {
    formDataIsNeeded?: boolean;
    queryOptions?: UseQueryOptions<any, Error>;
    loading?: boolean;
+   baseUrl: string;
 }
 
 const apiCall = async ({
+   baseUrl,
    url = "",
    params = {},
    data = {},
@@ -51,49 +53,49 @@ const apiCall = async ({
       headers["Content-Type"] = "multipart/form-data";
    }
 
-   const completeUrl: string = process.env.NEXT_PUBLIC_BASE_URL + url;
+   const completeUrl: string = baseUrl + url;
 
    if (loading) {
       store.dispatch(setApiLoading(true));
    }
 
-   // try {
-   //   const response: AxiosResponse = await axios({
-   //     method,
-   //     url: completeUrl,
-   //     headers,
-   //     params,
-   //     data,
-   //     cancelToken: cancelTokenSource.token,
-   //   });
+   try {
+      const response: AxiosResponse = await axios({
+         method,
+         url: completeUrl,
+         headers,
+         params,
+         data,
+         cancelToken: cancelTokenSource.token,
+      });
 
-   //   callback(response.data, null);
-   //   if (loading) {
-   //     store.dispatch(setApiLoading(false));
-   //   }
-   // } catch (error: any) {
-   //   if (error?.response?.status === 401 || error?.response?.status === 403) {
-   //     if (userData) {
-   //       toast.error(TOKEN);
-   //       if (typeof window !== undefined) {
-   //         window.location.href = '/';
-   //         removeFromLocalStorage('user');
-   //       }
-   //     } else {
-   //       toast.error(NEED_LOGIN);
-   //     }
-   //     return;
-   //   }
+      callback(response.data, null);
+      if (loading) {
+         store.dispatch(setApiLoading(false));
+      }
+   } catch (error: any) {
+      if (error?.response?.status === 401 || error?.response?.status === 403) {
+         if (userData) {
+            toast.error(TOKEN);
+            if (typeof window !== undefined) {
+               window.location.href = "/";
+               removeFromLocalStorage("user");
+            }
+         } else {
+            toast.error(NEED_LOGIN);
+         }
+         return;
+      }
 
-   //   callback(null, error?.response);
-   //   store.dispatch(setApiLoading(false));
-   // }
+      callback(null, error?.response?.data);
+      store.dispatch(setApiLoading(false));
+   }
 };
 
 export default apiCall;
 
 export const useApiCall = <T>({
-   url: propUrl, // Rename the prop URL to avoid conflicts
+   url: propUrl,
    params = {},
    data: sendedData = {},
    method = "get",
@@ -107,15 +109,16 @@ export const useApiCall = <T>({
       staleTime: 600000,
    },
    loading = true,
+   baseUrl,
 }: useApiCallOptions) => {
-   // Define the URL to be used for the API call based on the prop
-   const apiUrl = shouldCallApi ? propUrl : ""; // Change this logic as needed
+   const apiUrl = shouldCallApi ? propUrl : "";
 
    const fetchData = async () => {
       return new Promise<any>((resolve, reject) => {
          if (shouldCallApi) {
             apiCall({
-               url: apiUrl, // Use the computed API URL
+               baseUrl,
+               url: apiUrl,
                params,
                data: sendedData,
                method,
@@ -130,13 +133,11 @@ export const useApiCall = <T>({
                loading,
             });
          } else {
-            // Return a placeholder value or null when shouldCallApi is false
             resolve(null);
          }
       });
    };
 
-   // Use useQuery with the provided queryOptions
    const { data, error, isLoading, refetch } = useQuery<T, Error>(apiUrl, fetchData, queryOptions);
 
    return { data, error, isLoading, refetch };

@@ -12,9 +12,8 @@ interface liProps {
    dataSet: string;
 }
 
-const NavLink = ({ homeFixed, li, index }: { homeFixed?: boolean; index: number; li: liProps }) => {
+const NavLink = ({ li, index }: { homeFixed?: boolean; index: number; li: liProps }) => {
    const dispatch = useDispatch();
-   const scrollY = useScrollY();
    const pathname = usePathname();
    const dropdown = useGetDropdown();
 
