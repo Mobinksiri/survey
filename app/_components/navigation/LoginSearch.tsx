@@ -25,15 +25,6 @@ const LoginSearch = () => {
       dispatch(setIsOpenLogin(true));
    };
 
-   const { data, refetch } = useApiCall<any>({
-      baseUrl: baseUrls?.person,
-      method: "post",
-      url: "/userPerson/getUserPersonById",
-      queryOptions: {
-         enabled: false,
-      },
-   });
-
    const { userData, userDetail } = useSelector(getUser);
 
    const variants = {
@@ -44,12 +35,6 @@ const LoginSearch = () => {
    useEffect(() => {
       profileDropdownOpenSet(false);
    }, [pathname]);
-
-   useEffect(() => {
-      if (userData && !userDetail) {
-         refetch();
-      }
-   }, [userData]);
 
    useEffect(() => {
       const handleClickOutside = (event: any) => {

@@ -527,28 +527,26 @@ const Page = () => {
    };
 
    return (
-      <div className="p-4 rounded-md shadow-default">
-         <div className="bg-white lg:shadow-sidebar rounded-3xl p-2">
-            <h4 className="textXl text-text1">پروفایل کاربری</h4>
-            {/* <Tabbar
+      <div className="p-6 rounded-md shadow-default">
+         <h4 className="textMd text-text1">پروفایل کاربری</h4>
+         {/* <Tabbar
                onClick={tabChangeFunction}
                activeItem={searchParams.get("selected") ?? tabbarArray?.[0]?.title}
                array={tabbarArray}
             /> */}
-            {searchParams.get("selected") == tabbarArray?.[0]?.title &&
-               // <ProfileContent
-               //   userDetail={userDetail}
-               //   mbtiList={mbtiList}
-               //   cities={cities}
-               //   provinces={provinces}
-               //   aniagramList={aniagramList}
-               //   userDetailRefetch={userDetailRefetch}
-               // />
-               tabbarArray?.[0]?.title}
-            {searchParams.get("selected") == tabbarArray?.[2]?.title &&
-               // <PasswordChangeContent />
-               tabbarArray?.[2]?.title}
-         </div>
+         {searchParams.get("selected") == tabbarArray?.[0]?.title &&
+            // <ProfileContent
+            //   userDetail={userDetail}
+            //   mbtiList={mbtiList}
+            //   cities={cities}
+            //   provinces={provinces}
+            //   aniagramList={aniagramList}
+            //   userDetailRefetch={userDetailRefetch}
+            // />
+            tabbarArray?.[0]?.title}
+         {searchParams.get("selected") == tabbarArray?.[2]?.title &&
+            // <PasswordChangeContent />
+            tabbarArray?.[2]?.title}
       </div>
    );
 };

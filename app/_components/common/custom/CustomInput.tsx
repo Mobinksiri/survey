@@ -80,12 +80,12 @@ const CustomInput = ({
                   {label}
                </p>
             )}
-            <div className="relative flex items-center z-[1] bg-gray-200 rounded-lg px-3 py-2">
+            <div className="relative flex items-center z-[1] bg-gray-200 rounded-md px-3 py-2">
                <i className="fa fa-regular fa-file-import text-text1 ml-1" />
                <p className="textSmm font-normal text-text1">انتخاب فایل</p>
                <input
                   accept=".png, .jpg"
-                  className={`textSmm z-[10] cursor-pointer text-text3 absolute top-0 left-0 opacity-0 bottom-0 right-0 rounded-lg border border-[#D6D6D6] outline-none w-full h-full ${inputClassName}`}
+                  className={`textSmm z-[10] cursor-pointer text-text3 absolute top-0 left-0 opacity-0 bottom-0 right-0 rounded-md border border-[#D6D6D6] outline-none w-full h-full ${inputClassName}`}
                   onChange={imageChangeFunction}
                   type={type}
                   placeholder={placeholder ?? "متن ورودی "}
@@ -105,7 +105,7 @@ const CustomInput = ({
                </p>
             )}
             <textarea
-               className={`textSmm text-text3 rounded-lg border border-[#D6D6D6] outline-none focus:border-[#959595] px-4 py-2 w-full placeholder:text-[13px] placeholder:opacity-80 transition-all min-h-[40px] h-20 max-h-36 resize-none ${inputClassName}`}
+               className={`textSmm text-text3 rounded-md border border-[#D6D6D6] outline-none focus:border-[#959595] px-4 py-2 w-full placeholder:text-[13px] placeholder:opacity-80 transition-all min-h-[40px] h-20 max-h-36 resize-none ${inputClassName}`}
                value={state ?? ""}
                onChange={inputChangeFunction}
                type={type}
@@ -124,7 +124,7 @@ const CustomInput = ({
                </p>
             )}
             <input
-               className={`textSmm text-text3 rounded-lg border border-[#D6D6D6] outline-none focus:border-[#959595] px-4 py-2 w-full placeholder:text-[13px] placeholder:opacity-80 transition-all min-h-[40px] h-20 max-h-36 resize-none ${inputClassName}`}
+               className={`textSmm text-text3 rounded-md border border-[#D6D6D6] outline-none focus:border-[#959595] px-4 py-2 w-full placeholder:text-[13px] placeholder:opacity-80 transition-all min-h-[40px] h-20 max-h-36 resize-none ${inputClassName}`}
                value={state ?? null}
                onChange={inputChangeFunction}
                type={type}
@@ -188,7 +188,7 @@ const CustomInput = ({
                )}
                <div className="relative">
                   <input
-                     className={`textSmm text-text3 rounded-lg border border-[#D6D6D6] outline-none focus:border-[#959595] h-10 px-4 py-2 transition-all w-full placeholder:text-[13px] placeholder:opacity-80 ${inputClassName}`}
+                     className={`textSmm text-text3 rounded-md border border-[#D6D6D6] outline-none focus:border-[#959595] h-10 px-4 py-2 transition-all w-full placeholder:text-[13px] placeholder:opacity-80 ${inputClassName}`}
                      value={state ?? ""}
                      onClick={() => dateModalSet(true)}
                      type={"text"}
@@ -214,7 +214,7 @@ const CustomInput = ({
             <div className="relative">
                <input
                   pattern={pattern}
-                  className={`textSmm text-text3 rounded-lg border border-[#D6D6D6] outline-none focus:border-[#959595] h-10 px-4 py-2 transition-all w-full placeholder:text-[13px] placeholder:opacity-80 ${inputClassName}`}
+                  className={`textSmm text-text3 rounded-md border border-[#D6D6D6] outline-none focus:border-[#959595] h-10 px-4 py-2 transition-all w-full placeholder:text-[13px] placeholder:opacity-80 ${inputClassName}`}
                   value={state ?? null}
                   onChange={inputChangeFunction}
                   type={type}
@@ -238,7 +238,7 @@ const CustomInput = ({
          <div className="relative">
             <input
                pattern={pattern}
-               className={`textSmm text-text3 rounded-lg border border-[#D6D6D6] outline-none focus:border-[#959595] h-10 px-4 py-2 transition-all w-full placeholder:text-[13px] placeholder:opacity-80 ${inputClassName}`}
+               className={`textSmm text-text3 rounded-md border border-[#D6D6D6] outline-none focus:border-[#959595] h-10 px-4 py-2 transition-all w-full placeholder:text-[13px] placeholder:opacity-80 ${inputClassName}`}
                value={state ?? ""}
                onChange={inputChangeFunction}
                type={type ?? "text"}

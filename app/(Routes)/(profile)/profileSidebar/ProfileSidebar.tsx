@@ -6,6 +6,17 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { useDispatch } from "react-redux";
 
+export const profilePaths = [
+   {
+      title: "حساب کاربری",
+      href: "/profile",
+   },
+   {
+      title: "پنل مدیریتی",
+      href: "/profile/panel",
+   },
+];
+
 const Item = ({ title, onClick, href }: { title: string; onClick?: any; href?: string }) => {
    const pathname = usePathname();
 
@@ -15,7 +26,7 @@ const Item = ({ title, onClick, href }: { title: string; onClick?: any; href?: s
             href={href}
             onClick={onClick}
             className={`w-full cursor-pointer px-6 py-4 transition-all ${
-               href && pathname?.includes(href) ? "bg-gray-100" : "hover:bg-gray-50"
+               href == pathname ? "bg-gray-100" : "hover:bg-gray-50"
             }`}
          >
             {title}
@@ -44,8 +55,9 @@ const ProfileSidebar = () => {
       <>
          {/* avatar */}
          <div className="col-span-4 overflow-hidden lg:w-auto rounded-md h-fit justify-around shadow-default flex mx-auto lg:mx-0 flex-row lg:flex-col">
-            <Item href="profile" title="حساب کاربری" />
-            <Item href="profile/panel" title="پنل مدیریتی" />
+            {profilePaths?.map((item) => (
+               <Item title={item?.title} href={item?.href} />
+            ))}
             <Item onClick={revokeFunction} title="خروج از حساب کاربری" />
          </div>
       </>

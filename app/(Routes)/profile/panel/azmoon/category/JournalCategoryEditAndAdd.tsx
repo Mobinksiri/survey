@@ -1,10 +1,7 @@
 "use client";
-
 import apiCall, { useApiCall } from "@/app/_apiCall/apiCall";
 import CustomButton from "@/app/_components/common/custom/CustomButton";
 import CustomInput from "@/app/_components/common/custom/CustomInput";
-import { removeFromLocalStorage } from "@/app/_utils/localStorage";
-import { setUserData } from "@/app/store/user";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -12,9 +9,8 @@ import { useDispatch } from "react-redux";
 import CustomSelect from "@/app/_components/common/custom/CustomSelect";
 import Modal from "@/app/_components/common/modal/Modal";
 import StepBar from "@/app/_components/common/panel/StepBar";
-import { baseUrls } from "@/app/_apiCall/baseUrls";
 
-const JournalCategoryEditAndAdd = () => {
+export const JournalCategoryEditAndAdd = () => {
    const router = useRouter();
    const dispatch = useDispatch();
 
@@ -29,7 +25,7 @@ const JournalCategoryEditAndAdd = () => {
 
    useEffect(() => {
       if (selectedEditCategory) {
-         const findEditedCategory = categoryList?.data?.find(
+         const findEditedCategory = categoryList?.find(
             (item: any) => item?.id == selectedEditCategory?.value
          );
          editedCategoryNameSet(findEditedCategory?.name);
@@ -41,8 +37,7 @@ const JournalCategoryEditAndAdd = () => {
    const handleAddCategory = () => {
       if (categoryName) {
          return apiCall({
-            baseUrl: baseUrls?.poll,
-            url: "/poll/createPollCategory",
+            url: "/api/create-pollCategory",
             method: "post",
             data: {
                name: categoryName,
@@ -50,7 +45,7 @@ const JournalCategoryEditAndAdd = () => {
             callback: (res, er) => {
                if (res) {
                   refetchCategory();
-                  toast.success(res?.message);
+                  toast.success(res);
                   categoryNameSet("");
                }
             },
@@ -67,17 +62,15 @@ const JournalCategoryEditAndAdd = () => {
       }
       if (editedCategoryName || editedActiveId) {
          return apiCall({
-            baseUrl: baseUrls?.poll,
-            url: `/poll/updatePollCategory`,
-            method: "post",
+            url: `/api/updatePollCategory/${selectedEditCategory?.value}`,
+            method: "put",
             data: {
-               id: selectedEditCategory?.value,
                name: editedCategoryName,
             },
             callback: (res, er) => {
                if (res) {
                   refetchCategory();
-                  toast.success(res?.message);
+                  toast.success("دسته بندی با موفقیت ادیت شد.");
                   editedCategoryNameSet(null);
                   editedActiveIdSet(0);
                   selectedEditCategorySet(null);
@@ -90,26 +83,20 @@ const JournalCategoryEditAndAdd = () => {
    };
 
    const { data: categoryList, refetch: refetchCategory } = useApiCall<any>({
-      baseUrl: baseUrls?.poll,
-      method: "post",
-      url: "/poll/getAllPollCategorys",
+      url: "/api/get-pollCategory",
    });
 
-   const handleDeleteCategory = () => {
+   const forumCategoryDelete = () => {
       if (removedMagazineId) {
          return apiCall({
-            baseUrl: baseUrls?.poll,
-            method: "post",
-            url: `/poll/deletePollCategory`,
-            data: {
-               id: removedMagazineId,
-            },
+            url: `/api/deletePollCategory/${removedMagazineId}`,
+            method: "delete",
             callback: (res, er) => {
                if (res) {
                   refetchCategory();
                   removedMagazineIdSet(null);
                   mockRemovedItemSet(null);
-                  toast?.success(res?.message);
+                  toast.success("دسته بندی با موفقیت پاک شد.");
                }
             },
          });
@@ -160,7 +147,7 @@ const JournalCategoryEditAndAdd = () => {
                      className="!w-fit px-4"
                      variant="primary"
                      type="button"
-                     onClick={handleDeleteCategory}
+                     onClick={forumCategoryDelete}
                   >
                      حذف
                   </CustomButton>
@@ -208,11 +195,9 @@ const JournalCategoryEditAndAdd = () => {
                   <CustomSelect
                      options={
                         categoryList &&
-                        categoryList?.data?.[0] &&
-                        categoryList?.data?.map((item: any) => ({
-                           label: item?.name,
-                           value: item?.id,
-                        }))
+                        typeof categoryList !== "string" &&
+                        categoryList?.[0] &&
+                        categoryList?.map((item: any) => ({ label: item?.name, value: item?.id }))
                      }
                      placeholder="جستجو کنید."
                      onChange={selectRemoveFunction}
@@ -233,11 +218,9 @@ const JournalCategoryEditAndAdd = () => {
                <CustomSelect
                   options={
                      categoryList &&
-                     categoryList?.data?.[0] &&
-                     categoryList?.data?.map((item: any) => ({
-                        label: item?.name,
-                        value: item?.id,
-                     }))
+                     typeof categoryList !== "string" &&
+                     categoryList?.[0] &&
+                     categoryList?.map((item: any) => ({ label: item?.name, value: item?.id }))
                   }
                   placeholder="جستجو کنید."
                   value={selectedEditCategory}
@@ -255,19 +238,46 @@ const JournalCategoryEditAndAdd = () => {
                         />
                      </div>
                   </div>
-                  <CustomButton
-                     variant="primary"
-                     type="button"
-                     onClick={handleEditCategory}
-                     className="w-full lg:!w-fit px-4 !mt-6 lg:mr-auto"
-                  >
-                     ویرایش
-                  </CustomButton>
+                  <div className="my-4">
+                     {/* <div className="flex items-end">
+       <span className="textSmm font-normal text-text3">انتخاب تصویر</span>
+     </div>
+     <div className="grid grid-cols-4 lg:flex mt-4 w-full">
+       {iconList.map((e, i) => (
+         <div
+           key={i}
+           className="cursor-pointer relative w-full flex items-center justify-center overflow-auto"
+           onClick={() => {
+             editedActiveIdSet(i);
+           }}
+         >
+           <Image
+             className={`h-[60px] object-fill p-2 ${
+               editedActiveId === e.id
+                 ? 'transition-all duration-200 border border-green1 rounded-xl'
+                 : ''
+             }`}
+             key={i}
+             alt="image"
+             src={e.icon}
+             width={60}
+             height={60}
+           />
+         </div>
+       ))}
+     </div> */}
+                     <CustomButton
+                        variant="primary"
+                        type="button"
+                        onClick={handleEditCategory}
+                        className="w-full lg:!w-fit px-4 !mt-8 !rounded-2xl lg:mr-auto"
+                     >
+                        ویرایش
+                     </CustomButton>
+                  </div>
                </div>
             </div>
          </div>
       </>
    );
 };
-
-export default JournalCategoryEditAndAdd;

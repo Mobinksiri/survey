@@ -88,6 +88,7 @@ const apiCall = async ({
       // }
 
       callback(null, error?.response?.data);
+      toast?.error(error?.response?.data?.message);
       store.dispatch(setApiLoading(false));
    }
 };
