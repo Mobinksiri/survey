@@ -2,7 +2,7 @@ import React from "react";
 import SingelService from "./subComponents/SingelService";
 
 const Services = ({ data }: any) => {
-   const poll = data?.poll;
+   const poll = data?.data;
 
    const fromAge = poll?.fromAge;
    const toAge = poll?.toAge;
@@ -38,27 +38,27 @@ const Services = ({ data }: any) => {
       {
          icon: "rectangle-list",
          title: "شرکت کنندگان",
-         subtitle: data?.userCount ?? 43,
+         subtitle: data?.userCount,
       },
       {
          icon: "square-question",
          title: "تعداد سوالات",
-         subtitle: data?.questionCount ?? 10,
+         subtitle: data?.questionCount,
       },
       {
          icon: "stopwatch",
          title: "زمان تقریبی",
-         subtitle: `${poll?.timeToAnswer ?? 0} دقیقه`,
+         subtitle: `${poll?.timeToAnswer} دقیقه`,
       },
       {
          icon: "square-info",
          title: "رده سنی",
-         subtitle: ageCategory ?? "نوجوانان - بزرگسالان",
+         subtitle: ageCategory,
       },
       {
          icon: "chart-user",
          title: "اعتبار و کارآیی",
-         subtitle: data?.commentCount ?? 23,
+         subtitle: data?.commentCount,
       },
       {
          icon: "medal",

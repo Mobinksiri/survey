@@ -56,44 +56,14 @@ const ShareLink = () => {
    );
 };
 
-const MainQuizContent = ({ data, refetch }: { data: any; refetch: any }) => {
-   const [videoModalIsOpen, videoModalIsOpenSet] = useState(false);
-   const videoRef = useRef<HTMLVideoElement | null>(null);
-
+const MainQuizContent = ({ data }: { data: any; refetch: any }) => {
    const id = useParams();
    const router = useRouter();
    const dispatch = useDispatch();
 
-   const handleVideoClick = () => {
-      videoModalIsOpenSet(true);
-      if (videoRef.current) {
-         videoRef.current.play();
-      }
-   };
+   const poll = data?.data;
 
-   const handleVideoClose = () => {
-      videoModalIsOpenSet(false);
-      if (videoRef.current) {
-         videoRef.current.pause();
-      }
-   };
-
-   const poll = data?.poll;
-
-   const [soundIsOpen, soundIsOpenSet] = useState(false);
-   const [isPlaying, setIsPlaying] = useState(false);
-
-   const handleSoundClick = () => {
-      soundIsOpenSet((prev) => !prev);
-   };
-
-   const handlePlayPause = (isNowPlaying: boolean) => {
-      setIsPlaying(isNowPlaying);
-   };
    const { userData } = useSelector(getUser);
-
-   const saveFunction = useSaveFunction(refetch);
-   const likeFunction = useLikeFunction(refetch);
 
    const [modal, modalSet] = useState(false);
    const [birthday, birthdaySet] = useState(null);
@@ -132,7 +102,7 @@ const MainQuizContent = ({ data, refetch }: { data: any; refetch: any }) => {
    };
 
    return (
-      <div className="h-fit w-full p-8 pb-6 shadow-default rounded-2xl bg-white md:relative  ">
+      <div className="h-fit w-full p-8 pb-6 shadow-default rounded-md bg-white md:relative">
          <Modal enableScrollProp isOpen={modal} onClick={() => null}>
             <div className="relative bg-white shadow-default w-[calc(100vw-32px)] md:w-[calc(100vw-50px)] lg:w-[600px] lg:max-w-[90%] lg:mx-auto h-fit p-4 lg:p-6 rounded-xl">
                <div
@@ -162,7 +132,6 @@ const MainQuizContent = ({ data, refetch }: { data: any; refetch: any }) => {
                   {data?.isPollTaked && (
                      <div className="textSm font-normal text-[#828420] bg- px-4 py-3 rounded-lg bg-[#f8f3d7] mb-4 flex items-center justify-between w-full">
                         <p>شما قبلا در این آزمون شرکت کرده اید.</p>
-                        {/* <i className="fa fa-solid fa-close cursor-pointer" onClick={() => errorSet(null)} /> */}
                      </div>
                   )}
                   <CustomInput
@@ -188,25 +157,6 @@ const MainQuizContent = ({ data, refetch }: { data: any; refetch: any }) => {
                <CustomButton onClick={startPoll} className="!px-4 mr-auto" variant="primary">
                   {data?.isPollTaked ? "شروع مجدد آزمون رایگان" : "شروع آزمون رایگان"}
                </CustomButton>
-            </div>
-         </Modal>
-
-         <Modal isOpen={videoModalIsOpen} onClick={handleVideoClose}>
-            <div className="bg-white w-[calc(100vw-32px)] md:sm:w-[calc(100vw-50px)] lg:w-[660px] h-fit rounded-lg">
-               <div className="py-4 px-5 flex items-center justify-between">
-                  <h3 className="textMd text-text1">ویدیو معرفی آزمون</h3>
-                  <i
-                     onClick={handleVideoClose}
-                     className="fa fa-solid fa-close textMd cursor-pointer text-text1"
-                  />
-               </div>
-               <Video
-                  // className={!videoModalIsOpen ? '!pointer-events-none' : ''}
-                  className="!pointer-events-none"
-                  src={poll?.videourl}
-                  autoPlay={videoModalIsOpen}
-                  ref={videoRef}
-               />
             </div>
          </Modal>
 
@@ -262,66 +212,25 @@ const MainQuizContent = ({ data, refetch }: { data: any; refetch: any }) => {
                </div>
             </div>
             <div className="flex flex-col gap-4 md:flex-row items-center w-full justify-between pt-4 border-t border-t-gray-300">
-               <div className="flex w-full gap-2 justify-evenly md:justify-start md:w-fit h-full">
-                  {poll?.voiceurl && (
-                     <ButtonQuiz
-                        icon="microphone"
-                        onClick={handleSoundClick}
-                        title="درباره تست بشنوید"
-                     />
-                  )}
-                  {poll?.videourl && (
-                     <ButtonQuiz icon="play" onClick={handleVideoClick} title="ویدیو معرفی آزمون" />
-                  )}
-               </div>
-               <div className="flex items-center">
-                  <ShareLink />
-                  <div className="max-w-[200px] mr-8">
-                     <CustomButton
-                        variant="primary"
-                        onClick={() => {
-                           if (userData) {
-                              modalSet(true);
-                           } else {
-                              openLoginModal();
-                           }
-                        }}
-                     >
-                        شروع آزمون
-                     </CustomButton>
-                  </div>
+               <ShareLink />
+               <div className="max-w-[200px] mr-8">
+                  <CustomButton
+                     variant="primary"
+                     onClick={() => {
+                        if (userData) {
+                           modalSet(true);
+                        } else {
+                           openLoginModal();
+                        }
+                     }}
+                  >
+                     شروع آزمون
+                  </CustomButton>
                </div>
             </div>
-            <Collapse className={`w-full h-fit`} transition="all 0.4s" isOpen={soundIsOpen}>
-               <SoundPlayer
-                  url="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Replace with your audio URL
-                  playing={isPlaying}
-                  onPlayPause={handlePlayPause}
-               />
-            </Collapse>
          </div>
       </div>
    );
 };
 
 export default MainQuizContent;
-
-const ButtonQuiz = ({
-   onClick,
-   title,
-   icon,
-}: {
-   onClick: (e?: any) => void;
-   title: string;
-   icon: string;
-}) => {
-   return (
-      <div
-         onClick={onClick}
-         className={`textSmm text-text1 flex cursor-pointer justify-evenly items-center border border-black rounded-full py-2 lg:px-3 w-1/2 lg:!w-fit`}
-      >
-         <i className={`fa fa-regular fa-${icon} ml-1 hidden lg:block`} />
-         <span>{title}</span>
-      </div>
-   );
-};

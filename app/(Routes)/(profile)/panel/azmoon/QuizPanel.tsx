@@ -21,6 +21,7 @@ import apiCall, { useApiCall } from "@/app/_apiCall/apiCall";
 import toast from "react-hot-toast";
 import CustomSelect from "@/app/_components/common/custom/CustomSelect";
 import StepBar from "@/app/_components/common/panel/StepBar";
+import { baseUrls } from "@/app/_apiCall/baseUrls";
 // -----------------------------------------------
 
 const RichTextEditor = dynamic(() => import("@/app/_components/editors/RichTextEditor"), {
@@ -63,10 +64,14 @@ const QuizPanel = () => {
    const [addModalOpen, addModalOpenSet] = useState(false);
 
    const { data: pollList, refetch: pollListRefetch } = useApiCall<any>({
-      url: "/api/poll",
+      baseUrl: baseUrls?.poll,
+      method: "post",
+      url: "/poll/getAllPolls",
    });
-   const { data: pollCategories, refetch: pollCategoriesRefetch } = useApiCall<any>({
-      url: "/api/get-pollCategory",
+   const { data: pollCategories } = useApiCall<any>({
+      baseUrl: baseUrls?.poll,
+      method: "post",
+      url: "/poll/getAllPollCategorys",
    });
 
    const [activeId, activeIdSet] = useState<number>(0);
@@ -84,9 +89,6 @@ const QuizPanel = () => {
    const [accordionList, accordionListSet] = useState<any[]>([]);
    const [maxTimeToAnswer, maxTimeToAnswerSet] = useState<string>("");
    const [timeToAnswer, timeToAnswerSet] = useState<string>("");
-
-   const [video, videoSet] = useState<File | null>(null);
-   const [audio, audioSet] = useState<File | null>(null);
 
    const clearFunction = () => {
       addModalOpenSet(false);
@@ -106,36 +108,30 @@ const QuizPanel = () => {
    };
 
    const addQuizFunction = () => {
-      const formData = new FormData();
-      if (video) {
-         formData.append("video", video);
-      }
-
-      if (audio) {
-         formData.append("voice", audio);
-      }
-
-      formData.append("title", quizName);
-      formData.append("description", quizDescription);
-      formData.append("maxTimeToAnswer", maxTimeToAnswer);
-      formData.append("timeToAnswer", timeToAnswer);
-      formData.append("Validity", quizValue);
-      // @ts-ignore
-      formData.append("imageId", activeId);
-      formData.append("frequentlyQuestions", JSON.stringify(accordionList));
-      formData.append("fromAge", minAge);
-      formData.append("toAge", maxAge);
-      formData.append("about", about);
-      formData.append("pollcategoryId", selectedCategory?.value);
-
       return apiCall({
-         url: "/api/poll",
+         baseUrl: baseUrls?.poll,
          method: "post",
-         data: formData,
-         formDataIsNeeded: true,
+         url: "/poll/createPoll",
+         data: {
+            id: 0,
+            price: 0,
+            title: quizName,
+            imageId: activeId,
+            description: quizDescription,
+            about,
+            pollcategoryId: selectedCategory?.value,
+            fromAge: minAge,
+            toAge: maxAge,
+            accessType: 1,
+            frequentlyQuestions: JSON.stringify(accordionList),
+            Validity: quizValue,
+            maxTimeToAnswer,
+            timeToAnswer,
+            userId: 0,
+         },
          callback: (res, er) => {
-            if (res?.msg) {
-               toast.success(res?.msg ?? "");
+            if (res) {
+               toast.success(res?.message ?? "");
                pollListRefetch();
                clearFunction();
             }
@@ -145,11 +141,17 @@ const QuizPanel = () => {
 
    const removeQuizFunction = (id: number) => {
       return apiCall({
-         url: `/api/poll/${id}`,
-         method: "delete",
-         data: {},
-         callback: (res, er) => {
-            pollListRefetch();
+         baseUrl: baseUrls?.poll,
+         url: `/poll/deletePoll`,
+         method: "post",
+         data: {
+            id,
+         },
+         callback: (res) => {
+            if (res) {
+               toast?.success(res?.message);
+               pollListRefetch();
+            }
          },
       });
    };
@@ -184,20 +186,6 @@ const QuizPanel = () => {
       accordionDescSet("");
    };
 
-   const videoChangeFunction = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files && e.target.files[0]) {
-         const selectedImage = e.target.files[0];
-         videoSet(selectedImage);
-      }
-   };
-   const audioChangeFunction = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files && e.target.files[0]) {
-         const selectedImage = e.target.files[0];
-
-         audioSet(selectedImage);
-      }
-   };
-
    const [selectedCategory, selectedCategorySet] = useState<any>(null);
 
    return (
@@ -206,6 +194,7 @@ const QuizPanel = () => {
             <StepBar array={[{ title: "آزمون های من" }]} />
             <AddQuizButton onClick={() => addModalOpenSet(true)} />
          </div>
+
          <Modal isOpen={addModalOpen} enableScrollProp onClick={() => null}>
             <div className="relative my-6 p-6 bg-white w-[calc(100vw-32px)] md:w-[calc(100vw-50vw)] lg:w-[calc(100vw-50vw)] rounded-2xl">
                <div
@@ -236,7 +225,8 @@ const QuizPanel = () => {
                            <CustomSelect
                               options={
                                  (pollCategories &&
-                                    pollCategories?.map((item: any) => ({
+                                    pollCategories?.data?.[0] &&
+                                    pollCategories?.data?.map((item: any) => ({
                                        label: item?.name,
                                        value: item?.id,
                                     }))) ??
@@ -288,32 +278,6 @@ const QuizPanel = () => {
                         state={about}
                         setState={aboutSet}
                      />
-                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div>
-                           <p className={`textSmm font-normal text-text3 mb-2 w-full`}>
-                              ویدیو معرفی آزمون
-                           </p>
-                           <input
-                              onChange={videoChangeFunction}
-                              className=""
-                              type="file"
-                              accept="video/*"
-                              name="file"
-                           />
-                        </div>
-                        <div>
-                           <p className={`textSmm font-normal text-text3 mb-2 w-full`}>
-                              درباره تست، بشنوید
-                           </p>
-                           <input
-                              onChange={audioChangeFunction}
-                              className=""
-                              type="file"
-                              accept="audio/*"
-                              name="file"
-                           />
-                        </div>
-                     </div>
                   </div>
                )}
                {quizAddIndex == 2 && (
@@ -448,13 +412,12 @@ const QuizPanel = () => {
                </div>
             </div>
          </Modal>
+
          <div className="rounded-md shadow-default p-6">
-            <div className="mb-6">
-               <CreatedQuiz
-                  removePoll={removeQuizFunction}
-                  array={pollList?.polls?.[0] ? pollList?.polls : []}
-               />
-            </div>
+            <CreatedQuiz
+               removePoll={removeQuizFunction}
+               array={pollList?.data?.[0] ? pollList?.data : []}
+            />
          </div>
       </>
    );

@@ -2,16 +2,20 @@
 import { useApiCall } from "@/app/_apiCall/apiCall";
 import { useParams } from "next/navigation";
 import MainQuizContent from "../../(quiz)/MainContent";
-import CourseDetail from "../../(quiz)/CourseDetail";
 import Services from "../../(quiz)/Services";
 import Comments from "../../(quiz)/Comments";
 import Link from "next/link";
+import { baseUrls } from "@/app/_apiCall/baseUrls";
 
 const Page = () => {
-   const id = useParams();
+   const { singelQuiz } = useParams();
 
    const { data: responseData, refetch } = useApiCall<any>({
-      url: `/api/poll/${id.singelQuiz}`,
+      baseUrl: baseUrls?.poll,
+      url: `/poll/getPollById`,
+      data: { id: singelQuiz },
+      method: "post",
+      shouldCallApi: !!singelQuiz,
    });
 
    return (
@@ -25,7 +29,7 @@ const Page = () => {
                آزمون ها
             </Link>
             <i className="fa fa-solid fa-chevron-left text-[10px] font-extrabold text-text1 ml-3" />
-            <span className="textSmm font-normal text-text1">{responseData?.poll?.title}</span>
+            <span className="textSmm font-normal text-text1">{responseData?.data?.title}</span>
          </div>
          <div className="grid grid-cols-8 gap-8">
             <div className="col-span-full">
