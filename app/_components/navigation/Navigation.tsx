@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "./Navbar";
 import LoginSearch from "./LoginSearch";
-import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { getLoading } from "@/app/store/loading";
 import Loading from "@/app/_components/loading/Loading";
@@ -11,7 +10,7 @@ const Navigation = () => {
 
    return (
       <div className="h-[60px] flex items-center border-b border-b-gray-300 absolute top-0 left-0 w-full">
-         {/* <Loading activate={apiLoading} /> */}
+         <Loading activate={apiLoading} />
          <div className={`custom-container flex items-center justify-between transition-all`}>
             <Navbar />
             <LoginSearch />

@@ -74,18 +74,18 @@ const apiCall = async ({
          store.dispatch(setApiLoading(false));
       }
    } catch (error: any) {
-      // if (error?.response?.status === 401 || error?.response?.status === 403) {
-      //    if (userData) {
-      //       toast.error(TOKEN);
-      //       if (typeof window !== undefined) {
-      //          window.location.href = "/";
-      //          removeFromLocalStorage("user");
-      //       }
-      //    } else {
-      //       toast.error(NEED_LOGIN);
-      //    }
-      //    return;
-      // }
+      if (error?.response?.status === 401 || error?.response?.status === 403) {
+         if (userData) {
+            toast.error(TOKEN);
+            if (typeof window !== undefined) {
+               window.location.href = "/";
+               removeFromLocalStorage("user");
+            }
+         } else {
+            toast.error(NEED_LOGIN);
+         }
+         return;
+      }
 
       callback(null, error?.response?.data);
       toast?.error(error?.response?.data?.message);

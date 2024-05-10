@@ -1,15 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { stripHtmlTags } from "@/app/_components/common/article/ArticlePost";
-import { iconList } from "../(profile)/panel/azmoon/QuizPanel";
-import Video from "next-video";
 import Modal from "@/app/_components/common/modal/Modal";
-import SoundPlayer from "@/app/_components/common/sound_player/SoundPlayer";
-import Collapse from "@kunukn/react-collapse";
 import QuizIconBack from "@/app/_assets/other/quiz/icons/quizIconBack.svg";
-import counseling from "@/app/_assets/other/quiz/icons/4.svg";
 
 // icons
 import rubika from "../../_assets/other/quiz/socialMedia/rubika.svg";
@@ -18,13 +13,9 @@ import telegram from "@/app/_assets/other/quiz/socialMedia/telegram.svg";
 import eta from "@/app/_assets/other/quiz/socialMedia/eta.svg";
 import instagram from "@/app/_assets/other/quiz/socialMedia/instagram.svg";
 import Link from "next/link";
-import IconButton from "@/app/_components/common/iconsButton/iconButton";
-import useSaveFunction from "@/app/_utils/useSaveFunction";
-import useLikeFunction from "@/app/_utils/useLikeFunction";
 import CustomButton from "@/app/_components/common/custom/CustomButton";
 import moment from "moment-jalaali";
-import { useApiCall } from "@/app/_apiCall/apiCall";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { setTest } from "@/app/store/test";
 import toast from "react-hot-toast";
 import { setIsOpenLogin } from "@/app/store/login";
@@ -32,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "@/app/_components/common/custom/CustomInput";
 import CustomSelect from "@/app/_components/common/custom/CustomSelect";
 import { getUser } from "@/app/store/user";
+import { iconList } from "../(profile)/panel/azmoon/QuizPanel";
 
 const ShareLink = () => {
    return (
@@ -57,11 +49,11 @@ const ShareLink = () => {
 };
 
 const MainQuizContent = ({ data }: { data: any; refetch: any }) => {
-   const id = useParams();
    const router = useRouter();
    const dispatch = useDispatch();
 
-   const poll = data?.data;
+   let questionsList = data?.questions;
+   let pollDetail = data?.pollDetail;
 
    const { userData } = useSelector(getUser);
 
@@ -71,10 +63,6 @@ const MainQuizContent = ({ data }: { data: any; refetch: any }) => {
 
    const [error, errorSet] = useState<string | null>(null);
 
-   const { data: questions } = useApiCall<any>({
-      url: `/api/questions/${id.singelQuiz}`,
-   });
-
    const startPoll = () => {
       const diff = moment(moment().format("jYYYY")).diff(birthday, "year");
       if (!gender?.value) {
@@ -83,15 +71,16 @@ const MainQuizContent = ({ data }: { data: any; refetch: any }) => {
       } else if (!birthday) {
          errorSet("لطفا تاریخ تولدتان را وارد کنید.");
          return;
-      } else if (diff < poll?.fromAge) {
-         errorSet(`این آزمون برای محدوده سنی ${poll?.fromAge} سال به بالا مناسب میباشد.`);
+      } else if (diff < pollDetail?.fromAge) {
+         errorSet(`این آزمون برای محدوده سنی ${pollDetail?.fromAge} سال به بالا مناسب میباشد.`);
          return;
       } else {
          errorSet(null);
-         if (questions?.length) {
-            router.push(`/quiz/${poll?.id}/${poll?.id}`);
+         if (questionsList?.length) {
+            router.push(`/quiz/${pollDetail?.id}/${pollDetail?.id}`);
             dispatch(setTest({ type: "ACCESS", data: true }));
          } else {
+            errorSet("هیچ سوالی به آزمون اضافه نشده است.");
             toast?.error("هیچ سوالی به آزمون اضافه نشده است.");
          }
       }
@@ -114,7 +103,7 @@ const MainQuizContent = ({ data }: { data: any; refetch: any }) => {
                   <i className="fa fa-regular fa-close text-[20px]" />
                </div>
                <h3 className="textMd text-text1 border-b border-b-gray1 mb-4 pb-4">
-                  {poll?.title}
+                  {pollDetail?.title}
                </h3>
                <p className="textSm font-bold text-center text-text1 mb-4">
                   لطفا جهت شروع یکی از موارد زیر را انتخاب کنید.
@@ -161,53 +150,31 @@ const MainQuizContent = ({ data }: { data: any; refetch: any }) => {
          </Modal>
 
          <div className="flex h-full flex-col">
-            {/* <div className="flex items-center absolute top-4 left-4">
-               <IconButton
-                  onClick={() => saveFunction({ id: poll?.id, markType: 4, isSaved: data?.isSave })}
-                  parentClassName="ml-2 bg-gray2"
-                  icon={data && data?.isSave ? " fa-solid fa-bookmark" : "bookmark"}
-                  iconClassName="text-text3"
-               />
-               <IconButton
-                  onClick={() =>
-                     likeFunction({ id: poll?.id, markType: 4, isLiked: data?.isLiked })
-                  }
-                  parentClassName="ml-2 bg-gray2"
-                  icon={data && data?.isLiked ? " fa-solid fa-heart" : "heart"}
-                  iconClassName="text-text3"
-               />
-            </div> */}
             <div className="flex h-full flex-col justify-between md:flex-row mb-8">
                <div className="relative object-cover h-[176px] w-[176px]">
                   <Image
                      alt="image"
-                     src={counseling}
-                     // src={iconList?.find((i) => i?.id === poll?.imageId)?.icon ?? ''}
+                     src={iconList?.find((i) => i?.id === pollDetail?.imageId)?.icon ?? ""}
                      fill
                      className="z-[10]"
                   />
                   <Image src={QuizIconBack} alt="icon" className="absolute top-0 w-full h-full" />
                </div>
                <div className="flex flex-col mt-4 lg:mt-0 lg:w-[calc(100%-204px)]">
-                  {/* title */}
                   <p className="text-[18px] md:text-[22px] font-extrabold mb-2">
-                     {poll?.title ?? "تست احساس تنهایی (SLFS)"}
+                     {pollDetail?.title}
                   </p>
-                  {/* type */}
                   <p className="mb-6 text-[#858687] text-[10px] md:text-[12px]">
                      دسته بندی :{" "}
                      <Link
                         href={`/quiz/category?sortBy=${data?.poll_category?.id}`}
                         className="text-[10px] md:text-[11px] text-text1 font-bold"
                      >
-                        {data?.poll_category?.name ?? "تست احساس تنهایی (SLFS)"}
+                        {data?.poll_category?.name}
                      </Link>
                   </p>
-                  {/* about */}
                   <p className="text-ellipsis justify-start text-[12px] font-normal text-[#555] md:text-[14px]">
-                     {poll?.about
-                        ? stripHtmlTags(poll?.about)
-                        : "تست احساس تنهایی را می توانید هم اکنون بصورت کاملا رایگان  و با تفسیر جامع  انجام دهید.. با این تست می توانید درک بهتری از احساس خود داشته باشید"}
+                     {pollDetail?.about ? stripHtmlTags(pollDetail?.about) : null}
                   </p>
                </div>
             </div>

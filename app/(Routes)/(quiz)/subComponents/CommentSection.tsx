@@ -1,4 +1,5 @@
 import apiCall, { useApiCall } from "@/app/_apiCall/apiCall";
+import { baseUrls } from "@/app/_apiCall/baseUrls";
 import { IconBox } from "@/app/_components/common/comment/Comment";
 import CustomButton from "@/app/_components/common/custom/CustomButton";
 import CustomInput from "@/app/_components/common/custom/CustomInput";
@@ -30,18 +31,20 @@ const Comment = ({ data, reply, refetch }: { data: any; reply?: boolean; refetch
       }
 
       return apiCall({
-         url: "/api/commentOnPoll",
+         baseUrl: baseUrls?.poll,
+         url: "/poll/createPollComment",
          method: "post",
          data: {
+            id: 0,
             pollId: data?.pollId,
             content: replyText,
             stars: rate,
             userId: userData?.userId,
             replyTo: data?.id,
          },
-         callback: (res, er) => {
-            if (res?.msg) {
-               toast?.success(res?.msg ?? "");
+         callback: (res) => {
+            if (res) {
+               toast?.success(res?.message ?? "");
                refetch();
                clearFunction();
             }
@@ -197,18 +200,20 @@ const Comments = ({
          return;
       }
       return apiCall({
-         url: "/api/commentOnPoll",
+         baseUrl: baseUrls?.poll,
+         url: "/poll/createPollComment",
          method: "post",
          data: {
+            id: 0,
             pollId: id,
             content: comment,
             stars: rate,
             userId: userData?.userId,
             replyTo: 0,
          },
-         callback: (res, er) => {
-            if (res?.msg) {
-               toast?.success(res?.msg ?? "");
+         callback: (res) => {
+            if (res) {
+               toast?.success(res?.message ?? "");
                commentsRefetch();
                clearFunction();
             }

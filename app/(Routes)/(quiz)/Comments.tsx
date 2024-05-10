@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import CommentSection from "./subComponents/CommentSection";
 import { useApiCall } from "@/app/_apiCall/apiCall";
+import { baseUrls } from "@/app/_apiCall/baseUrls";
 
 const TABBAR_LIST = [
    {
@@ -24,9 +25,14 @@ const TABBAR_LIST = [
 ];
 
 const Comments = ({ data }: { data: any }) => {
+   const pollDetail = data?.pollDetail;
+
    const { data: commentsArray, refetch: commentsRefetch } = useApiCall<any>({
-      url: "/api/getAllcommentOnPoll/" + data?.poll?.id,
-      shouldCallApi: !!data?.poll?.id,
+      baseUrl: baseUrls?.poll,
+      url: "/poll/getPollCommentByPollId",
+      method: "post",
+      data: { id: pollDetail?.id },
+      shouldCallApi: !!pollDetail?.id,
    });
 
    const [activeId, setActiveId] = useState(0);
@@ -55,9 +61,9 @@ const Comments = ({ data }: { data: any }) => {
             </div>
             <div className="shadow-default rounded-md bg-white p-6 overflow-hidden">
                <CommentSection
-                  commentsArray={commentsArray}
+                  commentsArray={commentsArray?.data}
                   commentsRefetch={commentsRefetch}
-                  data={data?.data}
+                  data={pollDetail}
                   id={activeId}
                />
             </div>

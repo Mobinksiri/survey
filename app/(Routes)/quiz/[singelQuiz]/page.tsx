@@ -11,12 +11,14 @@ const Page = () => {
    const { singelQuiz } = useParams();
 
    const { data: responseData, refetch } = useApiCall<any>({
+      url: `/question/getAllQuestions`,
       baseUrl: baseUrls?.poll,
-      url: `/poll/getPollById`,
       data: { id: singelQuiz },
       method: "post",
       shouldCallApi: !!singelQuiz,
    });
+
+   let pollDetail = responseData?.data?.pollDetail;
 
    return (
       <div className="custom-container">
@@ -25,25 +27,18 @@ const Page = () => {
                صفحه اصلی
             </Link>
             <i className="fa fa-solid fa-chevron-left text-[10px] font-extrabold text-text1 ml-3" />
-            <Link className="textSmm font-normal text-text1 ml-3" href="/quiz">
-               آزمون ها
-            </Link>
-            <i className="fa fa-solid fa-chevron-left text-[10px] font-extrabold text-text1 ml-3" />
-            <span className="textSmm font-normal text-text1">{responseData?.data?.title}</span>
+            <span className="textSmm font-normal text-text1">{pollDetail?.title}</span>
          </div>
          <div className="grid grid-cols-8 gap-8">
             <div className="col-span-full">
-               <MainQuizContent refetch={refetch} data={responseData} />
+               <MainQuizContent refetch={refetch} data={responseData?.data} />
             </div>
             <div className="col-span-8">
-               <Services data={responseData} />
+               <Services data={responseData?.data} />
             </div>
             <div className="col-span-full mb-[100px] ">
-               <Comments data={responseData} />
+               <Comments data={responseData?.data} />
             </div>
-            {/* <div className="hidden lg:block md:col-span-2">
-               <CourseDetail data={responseData} />
-            </div> */}
          </div>
       </div>
    );

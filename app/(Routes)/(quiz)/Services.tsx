@@ -2,7 +2,8 @@ import React from "react";
 import SingelService from "./subComponents/SingelService";
 
 const Services = ({ data }: any) => {
-   const poll = data?.data;
+   const poll = data?.pollDetail;
+   const questions = data?.questions;
 
    const fromAge = poll?.fromAge;
    const toAge = poll?.toAge;
@@ -35,15 +36,15 @@ const Services = ({ data }: any) => {
    }
 
    const SERVICE_LIST = [
-      {
-         icon: "rectangle-list",
-         title: "شرکت کنندگان",
-         subtitle: data?.userCount,
-      },
+      // {
+      //    icon: "rectangle-list",
+      //    title: "شرکت کنندگان",
+      //    subtitle: data?.userCount,
+      // },
       {
          icon: "square-question",
          title: "تعداد سوالات",
-         subtitle: data?.questionCount,
+         subtitle: questions?.length,
       },
       {
          icon: "stopwatch",
@@ -55,11 +56,11 @@ const Services = ({ data }: any) => {
          title: "رده سنی",
          subtitle: ageCategory,
       },
-      {
-         icon: "chart-user",
-         title: "اعتبار و کارآیی",
-         subtitle: data?.commentCount,
-      },
+      // {
+      //    icon: "chart-user",
+      //    title: "اعتبار و کارآیی",
+      //    subtitle: data?.commentCount,
+      // },
       {
          icon: "medal",
          title: "امتیاز",
