@@ -66,15 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          <div className="custom-container pb-[90px] lg:pb-0">
             <div className="lg:grid lg:grid-cols-[repeat(14,minmax(0,1fr))] lg:gap-8 gap-4">
                {/* left side category */}
-               {!singleTest && (
-                  <div className="z-[8] fixed bottom-0 left-0 lg:block lg:col-span-4 lg:sticky lg:top-[105px] w-full lg:h-[calc(100vh-182px)]">
-                     <div className="bg-white lg:overflow-hidden shadow-default lg:shadow-sidebar lg:rounded-md h-full">
-                        <div className="relative profile-sidebar-scrollBar lg:overflow-y-auto lg:pb-6 h-full lg:flex flex-col justify-between">
-                           <ProfileSidebar />
-                        </div>
-                     </div>
-                  </div>
-               )}
+               {!singleTest && <ProfileSidebar />}
 
                {/* body */}
                <div

@@ -18,6 +18,7 @@ const QuizPage = () => {
    const { data: pollList, refetch } = useApiCall<any>({
       url: "/api/poll",
    });
+
    const [activePage, setActivePage] = useState(1);
 
    const startIndex = (activePage - 1) * MAXIMUM_POSTS_PER_PAGE;
@@ -119,12 +120,7 @@ const QuizPage = () => {
 
    return (
       <div className="custom-container">
-         <div className="flex items-center justify-between mb-8">
-            <SectionTitle title="لیست آزمون ها" />
-            <div className="w-full lg:w-1/5 my-5 lg:my-0">
-               <SearchBox searchedValue={searchedValue} searchedValueSet={searchedValueSet} />
-            </div>
-         </div>
+         <SectionTitle title="لیست آزمون ها" className="mb-6" />
          <PostsFlex
             array={coursePostsArray?.slice(startIndex, endIndex)}
             title="آزمونی"

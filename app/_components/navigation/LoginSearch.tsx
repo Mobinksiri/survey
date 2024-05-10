@@ -7,9 +7,11 @@ import CustomButton from "../common/custom/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpenLogin } from "@/app/store/login";
 import { getUser } from "@/app/store/user";
-import SidebarItem from "@/app/(Routes)/(profile)/profileSidebar/SidebarItem";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useApiCall } from "@/app/_apiCall/apiCall";
+import { baseUrls } from "@/app/_apiCall/baseUrls";
+import Link from "next/link";
 
 const LoginSearch = () => {
    const dispatch = useDispatch();
@@ -23,7 +25,16 @@ const LoginSearch = () => {
       dispatch(setIsOpenLogin(true));
    };
 
-   const { userData } = useSelector(getUser);
+   const { data, refetch } = useApiCall<any>({
+      baseUrl: baseUrls?.person,
+      method: "post",
+      url: "/userPerson/getUserPersonById",
+      queryOptions: {
+         enabled: false,
+      },
+   });
+
+   const { userData, userDetail } = useSelector(getUser);
 
    const variants = {
       rotate: { y: 0, opacity: 1 },
@@ -33,6 +44,12 @@ const LoginSearch = () => {
    useEffect(() => {
       profileDropdownOpenSet(false);
    }, [pathname]);
+
+   useEffect(() => {
+      if (userData && !userDetail) {
+         refetch();
+      }
+   }, [userData]);
 
    useEffect(() => {
       const handleClickOutside = (event: any) => {
@@ -62,16 +79,13 @@ const LoginSearch = () => {
 
          <div className="relative">
             {userData ? (
-               <div
+               <Link
+                  href="/profile"
                   onClick={() => profileDropdownOpenSet((prev) => !prev)}
-                  className="relative bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center mr-6 cursor-pointer"
+                  className="cursor-pointer px-2 py-1 textSmm rounded-md border border-[#E66D24] text-[#E66D24]"
                >
-                  {userData?.avatar?.id && userData?.avatar?.url ? (
-                     <Image fill src={userData?.avatar?.url} alt="user" />
-                  ) : (
-                     <i className="fa fa-regular fa-user text-[18px]" />
-                  )}
-               </div>
+                  کاربر میهمان
+               </Link>
             ) : (
                <>
                   <CustomButton onClick={openLoginModal} variant="primary">
@@ -85,59 +99,6 @@ const LoginSearch = () => {
                   </div>
                </>
             )}
-            <motion.div
-               variants={variants}
-               animate={profileDropdownOpen ? "rotate" : "stop"}
-               className={`w-56 h-fit bg-white shadow-comment absolute mt-4 rounded-lg left-[-0.15rem] shadow-default z-[20] ${
-                  profileDropdownOpen ? "profile-dropdown" : "pointer-events-none"
-               }`}
-            >
-               {userData && (
-                  <>
-                     <div className="flex items-center justify-between mb-2 p-4 border-b border-b-gray-100">
-                        {/* <div className="relative bg-gray-100 ml-4 rounded-full w-12 h-12 flex items-center justify-center">
-                           {userData?.avatar?.id && userData?.avatar?.url ? (
-                              <Image fill src={userData?.avatar?.url} alt="user" />
-                           ) : (
-                              <i className="fa fa-regular fa-user text-[18px]" />
-                           )}
-                        </div> */}
-                        <div className="w-[calc(100%-60px)]">
-                           <p className="textSm font-bold text-text3 line-clamp-1">
-                              {userData?.name} {userData?.familyname ?? "مبین کثیری"}
-                           </p>
-                           {/* <p className="textXs font-normal text-text3 line-clamp-1">
-                              {!userData?.writer && !userData?.isAdmin ? "کاربر عادی " : null}
-                              {userData?.isAdmin && userData?.adminType == 1
-                                 ? "کاربر ادمین "
-                                 : null}
-                              {userData?.isAdmin && userData?.adminType == 2
-                                 ? "کاربر سوپر ادمین "
-                                 : null}
-                              {userData?.writer && userData?.writer?.type == "1"
-                                 ? "نویسنده "
-                                 : null}
-                              {userData?.writer && userData?.writer?.type == "2" ? "مترجم " : null}
-                              {userData?.writer && userData?.writer?.type == "3" ? "مدرس " : null}
-                           </p> */}
-                        </div>
-                     </div>
-                     <SidebarItem
-                        forNavigation
-                        line={false}
-                        title="پنل مدیریتی"
-                        href="panel"
-                        icon="pen-to-square"
-                     />
-                     <SidebarItem
-                        forNavigation
-                        line={false}
-                        title="خروج"
-                        icon="arrow-right-from-bracket"
-                     />
-                  </>
-               )}
-            </motion.div>
          </div>
       </div>
    );

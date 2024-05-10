@@ -31,7 +31,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
    let buttonBounce = disable ? undefined : 0.6;
    let buttonDamping = disable ? undefined : 7.5;
 
-   let buttonStyles = `relative w-full h-10 flex items-center justify-center rounded-md px-4 overflow-hidden ${
+   let buttonStyles = `relative w-full textSmm font-medium h-8 flex items-center justify-center rounded-md px-3 overflow-hidden ${
       disable ? "!opacity-50" : "!opacity-100"
    } ${className ?? ""}`;
 
@@ -52,7 +52,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
          break;
 
       case "outline":
-         buttonStyles += " bg-transparent border border-text1";
+         buttonStyles += " bg-transparent border text-[#E66D24] border-[#E66D24]";
          hoverScale = 0.975;
          break;
 

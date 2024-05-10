@@ -211,7 +211,7 @@ const MainQuizContent = ({ data, refetch }: { data: any; refetch: any }) => {
          </Modal>
 
          <div className="flex h-full flex-col">
-            <div className="flex items-center absolute top-4 left-4">
+            {/* <div className="flex items-center absolute top-4 left-4">
                <IconButton
                   onClick={() => saveFunction({ id: poll?.id, markType: 4, isSaved: data?.isSave })}
                   parentClassName="ml-2 bg-gray2"
@@ -226,7 +226,7 @@ const MainQuizContent = ({ data, refetch }: { data: any; refetch: any }) => {
                   icon={data && data?.isLiked ? " fa-solid fa-heart" : "heart"}
                   iconClassName="text-text3"
                />
-            </div>
+            </div> */}
             <div className="flex h-full flex-col justify-between md:flex-row mb-8">
                <div className="relative object-cover h-[176px] w-[176px]">
                   <Image

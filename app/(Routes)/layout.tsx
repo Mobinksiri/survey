@@ -17,7 +17,7 @@ import UserRevokeModal from "../_components/userRevokeModal/UserRevokeModal";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
    const pathname = usePathname();
-   const { singelQuiz, test } = useParams();
+   const { test } = useParams();
 
    const queryClient = new QueryClient();
 
@@ -25,10 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <>
          <html lang="fa" suppressHydrationWarning={true}>
             <head>
-               <title>ایما</title>
+               <title>نظرسنجی</title>
             </head>
             <body
-               className={`!overflow-x-hidden bg-[#F3F4F6] mt-10`}
+               className={`!overflow-x-hidden pt-[82px]`}
                dir="rtl"
                suppressHydrationWarning={true}
             >

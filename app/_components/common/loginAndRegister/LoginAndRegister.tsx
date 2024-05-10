@@ -43,7 +43,7 @@ const Login = ({
                   toast.success(res.message);
                   errorSet(null);
                   dispatch(setUserData(res));
-                  setToLocalStorage("user", res);
+                  setToLocalStorage("user", res?.data);
                   dispatch(setIsOpenLogin(false));
                   emailSet("");
                   passwordSet("");

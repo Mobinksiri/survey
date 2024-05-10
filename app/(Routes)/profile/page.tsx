@@ -527,14 +527,14 @@ const Page = () => {
    };
 
    return (
-      <div>
-         <div className="bg-white lg:shadow-sidebar rounded-3xl p-2 mb-6">
-            <h4 className="textXl text-text1 mb-8">پروفایل کاربری</h4>
-            <Tabbar
+      <div className="p-4 rounded-md shadow-default">
+         <div className="bg-white lg:shadow-sidebar rounded-3xl p-2">
+            <h4 className="textXl text-text1">پروفایل کاربری</h4>
+            {/* <Tabbar
                onClick={tabChangeFunction}
                activeItem={searchParams.get("selected") ?? tabbarArray?.[0]?.title}
                array={tabbarArray}
-            />
+            /> */}
             {searchParams.get("selected") == tabbarArray?.[0]?.title &&
                // <ProfileContent
                //   userDetail={userDetail}
