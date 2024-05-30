@@ -77,7 +77,7 @@ const MainQuizContent = ({ data }: { data: any; refetch: any }) => {
       } else {
          errorSet(null);
          if (questionsList?.length) {
-            router.push(`/quiz/${pollDetail?.id}/${pollDetail?.id}`);
+            router.push(`/${pollDetail?.id}/${pollDetail?.id}`);
             dispatch(setTest({ type: "ACCESS", data: true }));
          } else {
             errorSet("هیچ سوالی به آزمون اضافه نشده است.");

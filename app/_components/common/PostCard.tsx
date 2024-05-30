@@ -4,16 +4,11 @@ import Image, { StaticImageData } from "next/image";
 import React from "react";
 import moment from "moment-jalaali";
 import { useRouter } from "next/navigation";
-import apiCall from "@/app/_apiCall/apiCall";
 import { stripHtmlTags } from "./article/ArticlePost";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { getUser } from "@/app/store/user";
-import { NEED_LOGIN } from "@/app/_toast_messages";
 import QuizIconBack from "@/app/_assets/other/quiz/icons/quizIconBack.svg";
-import useSaveFunction from "@/app/_utils/useSaveFunction";
-import useLikeFunction from "@/app/_utils/useLikeFunction";
 export interface postDetail {
    typology?: boolean;
    postImage?: StaticImageData;
@@ -86,7 +81,7 @@ const PostCard = ({
    //  const likeFunction = useLikeFunction(onClick);
 
    const goToPost = () => {
-      router.push(`/quiz/${id}?${title?.value}`);
+      router.push(`/${id}?${title?.value}`);
    };
 
    return (

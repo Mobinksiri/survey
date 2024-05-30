@@ -1,11 +1,11 @@
 "use client";
 import { useApiCall } from "@/app/_apiCall/apiCall";
 import { useParams } from "next/navigation";
-import MainQuizContent from "../../(quiz)/MainContent";
-import Services from "../../(quiz)/Services";
-import Comments from "../../(quiz)/Comments";
 import Link from "next/link";
 import { baseUrls } from "@/app/_apiCall/baseUrls";
+import MainQuizContent from "../(quiz)/MainContent";
+import Services from "../(quiz)/Services";
+import Comments from "../(quiz)/Comments";
 
 const Page = () => {
    const { singelQuiz } = useParams();

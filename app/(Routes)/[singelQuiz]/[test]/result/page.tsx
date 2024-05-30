@@ -24,7 +24,7 @@
 //           نتیجه آزمون {responseData?.poll?.title}
 //         </h4>
 //         <Link
-//           href={`/quiz/${singelQuiz}`}
+//           href={`/${singelQuiz}`}
 //           className="textSmm text-text1 mb-4 cursor-pointer"
 //         >
 //           بازگشت
@@ -113,7 +113,7 @@
 import React from "react";
 
 const Result = () => {
-  return <div>Result</div>;
+   return <div>Result</div>;
 };
 
 export default Result;

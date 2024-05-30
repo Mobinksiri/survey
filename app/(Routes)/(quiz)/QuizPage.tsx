@@ -7,10 +7,7 @@ import { stripHtmlTags } from "@/app/_components/common/article/ArticlePost";
 import React, { useEffect, useState } from "react";
 import { iconList } from "../(profile)/panel/azmoon/QuizPanel";
 import CustomPagination from "@/app/_components/common/custom/CustomPagination";
-import SearchBox from "../(quiz)/search/SearchBox";
 import { useEffectSkipFirstRender } from "@/app/_hooks/useEffectSkipFirstRender";
-import FilterQuizList from "../(quiz)/filterOptions/FilterQuizList";
-import counseling from "@/app/_assets/other/quiz/icons/4.svg";
 import { baseUrls } from "@/app/_apiCall/baseUrls";
 
 const MAXIMUM_POSTS_PER_PAGE = 12;

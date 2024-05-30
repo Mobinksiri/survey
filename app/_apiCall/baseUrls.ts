@@ -1,5 +1,5 @@
 export const baseUrls = {
-   user: "http://130.185.77.235:8010",
-   person: "http://130.185.77.235:8012",
-   poll: "http://130.185.77.235:8014",
+   user: process.env.NEXT_PUBLIC_USER_BASE_URL as string,
+   person: process.env.NEXT_PUBLIC_PERSON_BASE_URL as string,
+   poll: process.env.NEXT_PUBLIC_POLL_BASE_URL as string,
 };
