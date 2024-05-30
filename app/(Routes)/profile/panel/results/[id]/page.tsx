@@ -5,8 +5,8 @@ import { useApiCall } from "@/app/_apiCall/apiCall";
 import { baseUrls } from "@/app/_apiCall/baseUrls";
 import { useParams } from "next/navigation";
 import React from "react";
-import { quizTypes } from "../../azmoon/[singleTest]/page";
 import Link from "next/link";
+import { quizTypes } from "@/app/_utils/quizTypes";
 
 const Question = (props: any) => {
    const { title, type: propType, choicesInQuestion } = props;

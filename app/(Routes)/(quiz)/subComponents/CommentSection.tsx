@@ -1,6 +1,5 @@
 import apiCall, { useApiCall } from "@/app/_apiCall/apiCall";
 import { baseUrls } from "@/app/_apiCall/baseUrls";
-import { IconBox } from "@/app/_components/common/comment/Comment";
 import CustomButton from "@/app/_components/common/custom/CustomButton";
 import CustomInput from "@/app/_components/common/custom/CustomInput";
 import Modal from "@/app/_components/common/modal/Modal";
@@ -12,6 +11,30 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Rating } from "react-simple-star-rating";
+
+export const IconBox = ({
+   icon,
+   text,
+   className,
+   iconClassName,
+   onClick,
+}: {
+   icon: string;
+   text?: string | number;
+   className?: string;
+   iconClassName?: string;
+   onClick?: () => void;
+}) => {
+   return (
+      <div
+         onClick={onClick}
+         className={`flex items-center px-2 py-1 cursor-pointer hover:bg-gray2 rounded-md transition-all ${className}`}
+      >
+         <i className={`fa-regular fa-${icon} ml-2 text-[10px] lg:text-[14px] ${iconClassName}`} />
+         {text && <h6 className="text-[12px] lg:text-[14px] font-normal text-text1">{text}</h6>}
+      </div>
+   );
+};
 
 const Comment = ({ data, reply, refetch }: { data: any; reply?: boolean; refetch: any }) => {
    const { userData } = useSelector(getUser);

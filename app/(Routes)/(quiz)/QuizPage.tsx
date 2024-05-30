@@ -3,12 +3,12 @@
 import { useApiCall } from "@/app/_apiCall/apiCall";
 import PostsFlex from "@/app/_components/common/PostsFlex";
 import SectionTitle from "@/app/_components/common/SectionTitle";
-import { stripHtmlTags } from "@/app/_components/common/article/ArticlePost";
 import React, { useEffect, useState } from "react";
 import { iconList } from "../(profile)/panel/azmoon/QuizPanel";
 import CustomPagination from "@/app/_components/common/custom/CustomPagination";
 import { useEffectSkipFirstRender } from "@/app/_hooks/useEffectSkipFirstRender";
 import { baseUrls } from "@/app/_apiCall/baseUrls";
+import { stripHtmlTags } from "./MainContent";
 
 const MAXIMUM_POSTS_PER_PAGE = 12;
 

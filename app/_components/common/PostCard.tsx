@@ -4,11 +4,11 @@ import Image, { StaticImageData } from "next/image";
 import React from "react";
 import moment from "moment-jalaali";
 import { useRouter } from "next/navigation";
-import { stripHtmlTags } from "./article/ArticlePost";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { getUser } from "@/app/store/user";
 import QuizIconBack from "@/app/_assets/other/quiz/icons/quizIconBack.svg";
+import { stripHtmlTags } from "@/app/(Routes)/(quiz)/MainContent";
 export interface postDetail {
    typology?: boolean;
    postImage?: StaticImageData;

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import { stripHtmlTags } from "@/app/_components/common/article/ArticlePost";
 import Modal from "@/app/_components/common/modal/Modal";
 import QuizIconBack from "@/app/_assets/other/quiz/icons/quizIconBack.svg";
 
@@ -24,6 +23,22 @@ import CustomInput from "@/app/_components/common/custom/CustomInput";
 import CustomSelect from "@/app/_components/common/custom/CustomSelect";
 import { getUser } from "@/app/store/user";
 import { iconList } from "../(profile)/panel/azmoon/QuizPanel";
+import { parse } from "parse5";
+function getTextContent(node: any): string {
+   if (node.childNodes) {
+      return node.childNodes.map(getTextContent).join("");
+   } else if (node.value) {
+      return node.value;
+   } else {
+      return "";
+   }
+}
+
+export const stripHtmlTags = (html: any) => {
+   const documentFragment = parse(html);
+   const textContent = getTextContent(documentFragment);
+   return textContent;
+};
 
 const ShareLink = () => {
    return (
