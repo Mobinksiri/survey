@@ -13,7 +13,12 @@ const Item = ({ item, removePoll }: { item: any; removePoll: any }) => {
   const copyLinkFunction = () => {
     if (window && navigator) {
       const url = window?.location?.origin + "/quiz/" + item?.id;
-      navigator.clipboard.writeText(url);
+      var textField = document.createElement("textarea");
+      textField.innerText = url;
+      document.body.appendChild(textField);
+      textField.select();
+      document.execCommand("copy");
+      textField.remove();
       toast.success("لینک کپی شد.");
     }
   };
