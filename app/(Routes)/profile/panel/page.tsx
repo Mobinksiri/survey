@@ -1,5 +1,7 @@
 "use client";
 
+import { useApiCall } from "@/app/_apiCall/apiCall";
+import { baseUrls } from "@/app/_apiCall/baseUrls";
 import Link from "next/link";
 import React from "react";
 
@@ -29,6 +31,19 @@ const Item = ({
 };
 
 export default function Home() {
+  const {} = useApiCall<any>({
+    baseUrl: baseUrls?.rule,
+    method: "post",
+    url: "/permission/permissionService",
+    data: {
+      userId: "",
+      isroot: "",
+      type: "1",
+      access: "createPoll",
+      records: {},
+    },
+  });
+
   return (
     <div className=" ">
       <div className="p-6 rounded-md shadow-default">
