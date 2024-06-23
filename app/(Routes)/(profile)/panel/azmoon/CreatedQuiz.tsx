@@ -12,7 +12,7 @@ const Item = ({ item, removePoll }: { item: any; removePoll: any }) => {
 
   const copyLinkFunction = () => {
     if (window && navigator) {
-      const url = window?.location?.origin + "/quiz/" + item?.id;
+      const url = window?.location?.origin + "/" + item?.id;
       var textField = document.createElement("textarea");
       textField.innerText = url;
       document.body.appendChild(textField);
